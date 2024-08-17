@@ -2,6 +2,8 @@
 
 Welcome to **Pixel Puff**, a voxel engine built entirely in Java. This project represents my journey into understanding the intricacies of voxel-based game engines, inspired by the works of industry experts.
 
+![Logo](Logo.jpg)
+
 ## Authors
 
 - [@paramdholakia](https://www.github.com/paramdholakia)
