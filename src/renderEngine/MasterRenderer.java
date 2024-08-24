@@ -12,11 +12,11 @@ import models.RawModel;
  * This class plays a crucial role in preparing the rendering environment, clearing old frame data,
  * and ensuring the screen is ready for new content.
  * 
- * <p>Key Methods:</p>
- * <ul>
- *     <li>{@link #prepare()} - Clears the screen and sets the background color.</li>
- *     <li>{@link #render(RawModel)} - Renders the given model using the {@code EntityRenderer}.</li>
- * </ul>
+ * Key Methods:
+ * 
+ *     {@link #prepare()} - Clears the screen and sets the background color.</li>
+ *     {@link #render(RawModel)} - Renders the given model using the {@code EntityRenderer}.</li>
+ * 
  * 
  * @since 1.0
  * @version 1.0
@@ -27,8 +27,8 @@ public class MasterRenderer {
      * Prepares the renderer for a new frame by clearing the color buffer
      * and setting the background color.
      * 
-     * <p>This method should be called at the beginning of each rendering cycle
-     * to ensure that the screen is cleared and ready for new content to be drawn.</p>
+     * This method should be called at the beginning of each rendering cycle
+     * to ensure that the screen is cleared and ready for new content to be drawn.
      */
     public void prepare() {
         // Set the clear color to a light blue shade with RGBA values (0.4, 0.7, 1.0, 1.0)
@@ -43,8 +43,8 @@ public class MasterRenderer {
     /**
      * Renders the given model using the {@code EntityRenderer}.
      * 
-     * <p>This method is responsible for invoking the rendering process
-     * for the provided model, allowing it to be drawn on the screen.</p>
+     * This method is responsible for invoking the rendering process
+     * for the provided model, allowing it to be drawn on the screen.
      * 
      * @param model The {@link RawModel} to be rendered.
      */

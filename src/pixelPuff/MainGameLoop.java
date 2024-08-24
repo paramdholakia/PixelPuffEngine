@@ -2,6 +2,7 @@ package pixelPuff;
 
 import org.lwjgl.opengl.Display;
 
+import Shaders.StaticShader;
 import models.RawModel;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
@@ -17,13 +18,15 @@ import renderEngine.MasterRenderer;
  * 
  */
 public class MainGameLoop {
-
+	
     /**
      * A static {@code Loader} object for managing the loading of vertex data into VAOs.
      * This is a placeholder implementation that will be refined in future iterations.
      */
     public static Loader loader1 = null;
 
+    public static StaticShader staticShader1 = null; 
+    
     /**
      * The main method initializes the display, creates a loader to handle VAOs, sets up vertex data for rendering,
      * and enters the main game loop. The loop continuously prepares the renderer, renders the model, and updates
@@ -39,21 +42,24 @@ public class MainGameLoop {
         Loader loader = new Loader();
         loader1 = loader; // Assign the Loader to the static field for future use
 
+        StaticShader staticShader = new StaticShader();
+        staticShader1 = staticShader;
+        
         // Define the vertex positions for a square composed of two triangles
         float vertices[] = {
             // Triangle 1 (Top Left, Bottom Left, Bottom Right) Vertex Positions
             -0.5f,  0.5f, 0f, // Top Left
             -0.5f, -0.5f, 0f, // Bottom Left
              0.5f, -0.5f, 0f, // Bottom Right
-
             // Triangle 2 (Top Left, Bottom Right, Top Right) Vertex Positions
-             0.5f, -0.5f, 0f, // Bottom Right
              0.5f,  0.5f, 0f, // Top Right
-            -0.5f,  0.5f, 0f  // Top Left
         };
-
+        
+        int indices[] = {0,1,2,
+        				 2,3,0};
+        
         // Load the vertex data into a Vertex Array Object (VAO)
-        RawModel model = loader.loadToVAO(vertices);
+        RawModel model = loader.loadToVAO(vertices, indices);
 
         // Create an instance of MasterRenderer to handle rendering tasks
         MasterRenderer renderer = new MasterRenderer();
@@ -62,10 +68,12 @@ public class MainGameLoop {
         while (!Display.isCloseRequested()) {
             // Prepare the renderer (clear the screen and set the background color)
             renderer.prepare();
-
+            
+            staticShader.start();
+            
             // Render the loaded model using the MasterRenderer
             renderer.render(model);
-
+            staticShader.stop();
             // Update the display with the new frame and process any input events
             DisplayManager.updateDisplay();
         }
