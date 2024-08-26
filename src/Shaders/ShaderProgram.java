@@ -6,9 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.FloatBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 import lombok.NoArgsConstructor;
 
@@ -16,7 +21,7 @@ import lombok.NoArgsConstructor;
 public abstract class ShaderProgram {
 
     int programID, vertexShaderID, fragmentShaderID;
-
+    FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(16);
     public ShaderProgram(String vertexFile, String fragmentFile) {
         programID = GL20.glCreateProgram();
         try {
@@ -32,14 +37,50 @@ public abstract class ShaderProgram {
         GL20.glAttachShader(programID, fragmentShaderID);
         GL20.glLinkProgram(programID);
         GL20.glValidateProgram(programID);
+        
+        getAllUniformLocations();
+        
+        
     }
 
+    protected abstract void getAllUniformLocations();
+    protected int getUniformLocation(String varName) {
+    	return GL20.glGetUniformLocation(programID, varName);
+    }
+    
     protected abstract void bindAttribute();
 
     protected void bindAttribute(String variableName, int attribute) {
         GL20.glBindAttribLocation(programID, attribute, variableName);
     }
-
+    
+    protected void loadFloat(int location, float value) {
+    	GL20.glUniform1f(location, value);
+    }
+    
+    protected void load2DVector(int location, Vector2f vector) {
+    	GL20.glUniform2f(location, vector.x, vector.y);
+    }
+    protected void load3DVector(int location, Vector3f vector) {
+    	GL20.glUniform3f(location, vector.x, vector.y, vector.z);
+    }
+    
+    protected void loadMatrix(int location, Matrix4f matrix) {
+    	
+    	matrix.store(floatBuffer);
+    	floatBuffer.flip();
+    	
+    	GL20.glUniformMatrix4(location, false, floatBuffer);
+    }
+    
+	protected void loadBoolean(int location, boolean value) {
+		float toLoad = 0;
+		if (value) {
+			toLoad = 1;
+		}
+		GL20.glUniform1f(location, toLoad);
+	}
+    
     public void start() {
         GL20.glUseProgram(programID);
     }

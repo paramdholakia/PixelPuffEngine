@@ -1,5 +1,7 @@
 package renderEngine;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -9,6 +11,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 
 import models.RawModel;
 
@@ -53,6 +57,8 @@ public class Loader {
 	 */
 	static ArrayList<Integer> vbos = new ArrayList<Integer>();
 
+	static ArrayList<Integer> textures = new ArrayList<Integer>();
+	
 	/**
 	 * Loads vertex positions into a new Vertex Array Object (VAO).
 	 * 
@@ -64,13 +70,16 @@ public class Loader {
 	 * @return A {@link RawModel} instance containing the VAO ID and the vertex
 	 *         count.
 	 */
-	public RawModel loadToVAO(float[] positions, int[] indices) {
+	public RawModel loadToVAO(float[] positions, int[] indices, float[] uv) {
 		// Create a new VAO and get its ID
 		int vaoID = createVAO();
 
 		// Store vertex positions in a VBO and bind it to the VAO
 		storeDataInAttributeList(positions, 0, 3);
 
+		storeDataInAttributeList(uv, 1, 2);
+
+		
 		bindIndicesBuffer(indices);
 		
 		// Unbind the VAO to avoid affecting other VAOs
@@ -101,6 +110,31 @@ public class Loader {
 		// Return the ID of the created VAO
 		return vaoID;
 	}
+	
+	
+	
+	public int loadTexture(String fileName) {
+	    Texture texture = null;
+	    try {
+	        // Correct the path if needed
+	        String filePath = "D:/Coding/Projects/PixelPuffEngine/resources/res/" + fileName + ".PNG";
+	        texture = TextureLoader.getTexture("PNG", new FileInputStream(filePath));
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        System.err.println("Failed to load texture: " + fileName);
+	    }
+
+	    if (texture == null) {
+	        throw new RuntimeException("Texture could not be loaded: " + fileName);
+	    }
+
+	    int textureID = texture.getTextureID();
+	    textures.add(textureID);
+	    return textureID;
+	}
+
+	
+	
 
 	/**
 	 * Stores vertex data in a Vertex Buffer Object (VBO) and binds it to the
@@ -198,6 +232,11 @@ public class Loader {
 		// Delete all generated VBOs
 		for (int vbo : vbos) {
 			GL15.glDeleteBuffers(vbo);
+		}
+		
+		// Delete all generated Textures
+		for(int texture : textures) {
+			GL11.glDeleteTextures(texture);
 		}
 	}
 }

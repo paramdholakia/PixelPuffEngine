@@ -27,8 +27,8 @@ import pixelPuff.MainGameLoop;
 public class DisplayManager {
 
     // Constants for the window dimensions
-    private static final int WIDTH = 800;  // Width of the display window in pixels
-    private static final int HEIGHT = 600; // Height of the display window in pixels
+    private static final int WIDTH = 1920;  // Width of the display window in pixels
+    private static final int HEIGHT = 1080; // Height of the display window in pixels
 
     // Constant for the maximum frames per second (FPS) the display will run at
     private static final int FPSCAP = 60; // Frame rate cap
