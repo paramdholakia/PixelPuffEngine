@@ -12,18 +12,7 @@ import org.lwjgl.opengl.PixelFormat;
 
 import pixelPuff.MainGameLoop;
 
-/**
- * The {@code DisplayManager} class is responsible for managing the game window,
- * including its creation, updating, and closing. It sets up the OpenGL context, handles
- * display updates, and processes user input.
- * 
- * This class includes three main methods
- * 
- *     {@link #createDisplay()} - Initializes and sets up the display window and OpenGL context.
- *     {@link #updateDisplay()} - Updates the display with the current frame and processes keyboard input.
- *     {@link #closeDisplay()} - Closes the display and exits the application.
- * 
- */
+
 public class DisplayManager {
 
     // Constants for the window dimensions
@@ -31,7 +20,7 @@ public class DisplayManager {
     private static final int HEIGHT = 1080; // Height of the display window in pixels
 
     // Constant for the maximum frames per second (FPS) the display will run at
-    private static final int FPSCAP = 60; // Frame rate cap
+    private static final int FPSCAP = 144; // Frame rate cap
 
     /**
      * Creates and initializes the display window and OpenGL context.

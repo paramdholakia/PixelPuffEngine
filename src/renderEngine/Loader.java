@@ -16,65 +16,18 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import models.RawModel;
 
-/**
- * The {@code Loader} class is responsible for managing and loading vertex data
- * into OpenGL for rendering. It facilitates the creation of Vertex Array
- * Objects (VAOs) and Vertex Buffer Objects (VBOs), which store and manage
- * vertex data.
- * 
- * The class provides methods to create VAOs, store vertex data in VBOs, and
- * clean up resources when they are no longer needed.
- * 
- * Important fields and methods:
- * 
- * {@code vaos} - A list to keep track of generated VAOs. {@code vbos} - A list
- * to keep track of generated VBOs. {@code loadToVAO(float[] positions)} - Loads
- * vertex positions into a VAO. {@code createVAO()} - Creates a new VAO and
- * returns its ID.
- * {@code storeDataInAttributeList(float[] data, int attributeNumber, int dimensions)}
- * - Stores vertex data in a VBO and binds it to the VAO.
- * {@code storeDataInFloatBuffer(float[] data)} - Converts vertex data into a
- * FloatBuffer. {@code cleanUp()} - Deletes all generated VAOs and VBOs.
- * 
- * 
- * 
- */
+
 public class Loader {
 
-	/**
-	 * List of generated Vertex Array Object (VAO) IDs.
-	 * 
-	 * This list keeps track of all VAOs that have been created, allowing for proper
-	 * cleanup when the application exits or when VAOs are no longer needed.
-	 */
 	static ArrayList<Integer> vaos = new ArrayList<Integer>();
 
-	/**
-	 * List of generated Vertex Buffer Object (VBO) IDs.
-	 * 
-	 * This list keeps track of all VBOs that have been created, allowing for proper
-	 * cleanup when the application exits or when VBOs are no longer needed.
-	 */
 	static ArrayList<Integer> vbos = new ArrayList<Integer>();
 
 	static ArrayList<Integer> textures = new ArrayList<Integer>();
 	
-	/**
-	 * Loads vertex positions into a new Vertex Array Object (VAO).
-	 * 
-	 * This method creates a VAO, stores the provided vertex positions in a Vertex
-	 * Buffer Object (VBO), and binds the VBO to the VAO. It returns a
-	 * {@link RawModel} instance containing the VAO ID and the number of vertices.
-	 * 
-	 * @param positions An array of vertex positions in 3D space.
-	 * @return A {@link RawModel} instance containing the VAO ID and the vertex
-	 *         count.
-	 */
 	public RawModel loadToVAO(float[] positions, int[] indices, float[] uv) {
-		// Create a new VAO and get its ID
 		int vaoID = createVAO();
 
-		// Store vertex positions in a VBO and bind it to the VAO
 		storeDataInAttributeList(positions, 0, 3);
 
 		storeDataInAttributeList(uv, 1, 2);
@@ -82,37 +35,22 @@ public class Loader {
 		
 		bindIndicesBuffer(indices);
 		
-		// Unbind the VAO to avoid affecting other VAOs
 		GL30.glBindVertexArray(0);
 
-		// Return a RawModel instance with the VAO ID and vertex count
 		return new RawModel(vaoID, indices.length );
 	}
 
-	/**
-	 * Creates a new Vertex Array Object (VAO) and returns its ID.
-	 * 
-	 * This method generates a VAO, binds it to the current context, and adds its ID
-	 * to the list of VAOs for tracking and cleanup purposes.
-	 * 
-	 * @return The ID of the newly created VAO.
-	 */
 	private int createVAO() {
-		// Generate a new VAO and get its ID
 		int vaoID = GL30.glGenVertexArrays();
 
-		// Add the VAO ID to the list for tracking
 		vaos.add(vaoID);
 
-		// Bind the new VAO so that subsequent vertex attribute calls affect it
 		GL30.glBindVertexArray(vaoID);
 
-		// Return the ID of the created VAO
 		return vaoID;
 	}
 	
-	
-	
+		
 	public int loadTexture(String fileName) {
 	    Texture texture = null;
 	    try {
